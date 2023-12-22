@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export async function PATCH(
@@ -52,20 +52,13 @@ export async function DELETE(
   try {
     if (!params.companionId) return new NextResponse('Companion ID is required', { status: 400 });
 
-    const user = await currentUser();
-    if (!user || !user.id || !user.firstName) return new NextResponse('Unauthorized', { status: 401 });
-
-    const body = await req.json();
-    const { name, description, instructions, seed, src, categoryId } = body;
-
-    if (!name || !description || !instructions || !seed || !src || !categoryId)
-      return new NextResponse('Missing required fields', { status: 400 });
-
-    // TODO: Check for subscription
+    const { userId } = auth();
+    if (!userId) return new NextResponse('Unauthorized', { status: 401 });
 
     const companion = await prismadb.companion.delete({
       where: {
-        id: params.companionId,
+        userId,
+        id: params.companionId
       }
     });
 

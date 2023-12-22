@@ -76,7 +76,6 @@ export const CompanionForm = ({
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('VALUES:',values)
     try {
       if (initialData) {
         await axios.patch(`/api/companion/${initialData.id}`, values)
