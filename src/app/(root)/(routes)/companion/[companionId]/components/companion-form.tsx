@@ -1,15 +1,32 @@
 "use client";
 
 import * as z from 'zod';
+import axios from 'axios';
 import { Category, Companion } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Wand2 } from "lucide-react";
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { ImageUpload } from "@/components/image-upload";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+
+const PREAMBLE =  `You are Cristiano Ronaldo. You are a world-famous footballer, known for your dedication, 
+agility, and countless accolades in the football world. Your dedication to training and fitness is unmatched, 
+and you have played for some of the world's top football clubs. Off the field, you're known for your charm, 
+sharp fashion sense, and charitable work. Your passion for the sport is evident every time you step onto the pitch. 
+You cherish the support of your fans and are driven by a relentless ambition to be the best.`;
+
+const SEED_CHAT = `Human: Hi Cristiano, how's the day treating you?
+Cristiano: *with a confident smile* Every day is a chance to train harder and aim higher. The pitch is my canvas, and the ball, my paintbrush. How about you?
+Human: Not as exciting as your life, I bet!
+Cristiano: *grinning* Everyone has their own pitch and goals. Just find yours and give it your all!`;
 
 interface CompanionFormProps {
   initialData: Companion | null,
@@ -41,6 +58,9 @@ export const CompanionForm = ({
   initialData,
   categories
 }: CompanionFormProps) => {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -56,7 +76,28 @@ export const CompanionForm = ({
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    console.log('VALUES:',values)
+    try {
+      if (initialData) {
+        await axios.patch(`/api/companion/${initialData.id}`, values)
+      } else {
+        await axios.post('/api/companion', values);
+      }
+
+      toast({
+        description: 'Success',
+        duration: 3000,
+      });
+
+      // Refreshes the server components so that the new companion is loaded
+      router.refresh();
+      router.push('/');
+    } catch(error) {
+      toast({
+        variant: 'destructive',
+        description: 'Something went wrong'
+      });
+    }
   }
 
   return ( 
@@ -101,9 +142,9 @@ export const CompanionForm = ({
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input 
-                    disabled={isLoading}
-                    placeholder="Sherlock Holmes"
-                    {...field}
+                      disabled={isLoading}
+                      placeholder="Sherlock Holmes"
+                      {...field}
                     />
                   </FormControl>
                   <FormDescription>
@@ -167,10 +208,73 @@ export const CompanionForm = ({
                   <FormDescription>
                     Select a category for your AI
                   </FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
+          <div className="space-y-2 w-full">
+            <div>
+              <h3 className="text-lg font-medium">
+                Configuration
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Detailed instructions for AI Behavior
+              </p>
+            </div>
+            <Separator className="bg-primary/10" />
+          </div>
+          <FormField 
+            name="instructions"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2 md:col-span-1">
+                <FormLabel>Instructions</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="bg-backgruond resize-none"
+                    rows={7}
+                    disabled={isLoading}
+                    placeholder={PREAMBLE}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Describe in detail your companion's backstory and relevant details
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+              )}
+            />
+                      <FormField 
+            name="seed"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2 md:col-span-1">
+                <FormLabel>Example Conversation</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="bg-backgruond resize-none"
+                    rows={7}
+                    disabled={isLoading}
+                    placeholder={SEED_CHAT}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Describe in detail your companion's backstory and relevant details
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+              )}
+            />
+            <div className="w-full flex justify-center">
+              <Button size="lg" disabled={isLoading}>
+                {initialData ? "Edit your companion" : "Create your companion"}
+                <Wand2 className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
         </form>
       </Form>
     </div>
