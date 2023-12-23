@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { useProModal } from "@/hooks/use-pro-modal";
@@ -15,7 +15,14 @@ export const ProModal = () => {
   const { toast } = useToast();
   
   const [loading, setLoading] = useState(false);
-  
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
+
   const onSubscribe = async () => {
     try {
       setLoading(true);

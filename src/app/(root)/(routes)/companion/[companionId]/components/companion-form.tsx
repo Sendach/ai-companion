@@ -240,7 +240,7 @@ export const CompanionForm = ({
                   />
                 </FormControl>
                 <FormDescription>
-                  Describe in detail your companion's backstory and relevant details
+                  Describe in detail your companion&apos;s backstory and relevant details
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -262,7 +262,7 @@ export const CompanionForm = ({
                   />
                 </FormControl>
                 <FormDescription>
-                  Describe in detail your companion's backstory and relevant details
+                  Describe in detail your companion&apos;s backstory and relevant details
                 </FormDescription>
                 <FormMessage />
               </FormItem>

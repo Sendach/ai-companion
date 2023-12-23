@@ -47,7 +47,7 @@ export const Navbar = ({
         )}
 
         <ModeToggle />
-        <UserButton afterSignOutUrl="/" />
+        <UserButton afterSignOutUrl="/sign-in" />
       </div>
     </div>
    );
