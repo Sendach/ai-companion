@@ -3,7 +3,7 @@ import prismadb from "@/lib/prismadb";
 import { currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export const POST = async (req: Request) => {
   try {
     const user = await currentUser();
     if (!user || !user.id || !user.firstName) return new NextResponse('Unauthorized', { status: 401 });
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(companion);
     
-  } catch(error) {
+  } catch (error) {
     console.log('[COMPANION_POST', error);
     return new NextResponse('Internal Error', { status: 500 });
   }

@@ -91,7 +91,7 @@ export const CompanionForm = ({
       // Refreshes the server components so that the new companion is loaded
       router.refresh();
       router.push('/');
-    } catch(error) {
+    } catch (error) {
       toast({
         variant: 'destructive',
         description: 'Something went wrong'

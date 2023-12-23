@@ -3,10 +3,10 @@ import prismadb from "@/lib/prismadb";
 import { auth, currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
+export const PATCH = async (
   req: Request,
   { params }: { params: { companionId: string } }
-) {
+) => {
   try {
     if (!params.companionId) return new NextResponse('Companion ID is required', { status: 400 });
 
@@ -40,16 +40,16 @@ export async function PATCH(
 
     return NextResponse.json(companion);
     
-  } catch(error) {
+  } catch (error) {
     console.log('[COMPANION_PATCH', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
 
-export async function DELETE(
+export const DELETE = async (
   req: Request,
   { params }: { params: { companionId: string } }
-) {
+) => {
   try {
     if (!params.companionId) return new NextResponse('Companion ID is required', { status: 400 });
 
@@ -65,7 +65,7 @@ export async function DELETE(
 
     return NextResponse.json(companion);
     
-  } catch(error) {
+  } catch (error) {
     console.log('[COMPANION_DELETE', error);
     return new NextResponse('Internal Error', { status: 500 });
   }

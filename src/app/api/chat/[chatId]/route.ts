@@ -8,10 +8,10 @@ import { MemoryManager } from "@/lib/memory";
 import { rateLimit } from "@/lib/rate-limit";
 import prismadb from "@/lib/prismadb";
 
-export async function POST(
+export const POST = async (
   request: Request,
   { params }: { params: { chatId: string }}
-) {
+) => {
   try {
     const { prompt } = await request.json();
     const user = await currentUser();
