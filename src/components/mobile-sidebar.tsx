@@ -8,7 +8,13 @@ import {
 
 import { Sidebar } from "./sidebar";
 
-export const MobileSidebar = () => {
+type MobileSidebarProps = {
+  isPro: boolean
+}
+
+export const MobileSidebar = ({
+  isPro
+}: MobileSidebarProps) => {
   return (
     <div>
       <Sheet>
@@ -16,7 +22,7 @@ export const MobileSidebar = () => {
         <Menu />
       </SheetTrigger>
       <SheetContent side="left" className="p-0 bg-secondary pt-10 w-32">
-        <Sidebar />
+        <Sidebar isPro={isPro} />
       </SheetContent>
     </Sheet>
     </div>
