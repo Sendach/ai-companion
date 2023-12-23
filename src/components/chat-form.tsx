@@ -10,14 +10,16 @@ import { Button } from "./ui/button";
 type ChatFormProps = {
   input: string;
   handleInputChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>, ChatRequestOptions?: ChatRequestOptions) => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions | undefined) => void;
   isLoading: boolean;
+  companionName: string;
 };
 
 export const ChatForm = ({
   input,
   handleInputChange,
   onSubmit,
+  companionName,
   isLoading
 }: ChatFormProps) => {
   return (
@@ -29,7 +31,7 @@ export const ChatForm = ({
         disabled={isLoading}
         value={input}
         onChange={handleInputChange}
-        placeholder="Type a message"
+        placeholder={`Message ${companionName}...`}
         className="rounded-lg bg-primary/10"
       />
       <Button disabled={isLoading} variant="ghost">

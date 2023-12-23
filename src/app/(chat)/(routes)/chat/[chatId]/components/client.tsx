@@ -11,7 +11,7 @@ import { ChatMessages } from "@/components/chat-messages";
 import { ChatMessageProps } from "@/components/ui/chat-message";
 
 type ChatClientProps = {
-  companion:Companion & {
+  companion: Companion & {
     messages: Message[];
     _count: {
       messages:number
@@ -33,14 +33,14 @@ export const ChatClient = ({
     setInput 
   } = useCompletion({
     api: `/api/chat/${companion.id}`,
-    onFinish(prompt, completion) {
+    onFinish(_prompt, completion) {
       const systemMessage: ChatMessageProps = {
         role: 'system',
         content: completion
       };
 
       setMessages((current) => [...current, systemMessage]);
-      setInput('');
+      setInput("");
       
       router.refresh();
     }
@@ -54,27 +54,25 @@ export const ChatClient = ({
 
     setMessages((current) => [...current, userMessage]);
 
+    console.log('E IS: ', e)
     handleSubmit(e);
   }
-
 
   return (
     <div className="flex flex-col h-full p-4 space-y-2">
       <ChatHeader companion={companion} />
+      
       <ChatMessages 
         companion={companion}
         isLoading={isLoading}
         messages={messages}
       />
 
-      <div>
-        Messaged TODO
-      </div>
-
       <ChatForm 
         isLoading={isLoading}
         input={input}
         handleInputChange={handleInputChange}
+        companionName={companion.name}
         onSubmit={onSubmit}
       />
     </div>

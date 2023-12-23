@@ -41,12 +41,12 @@ export const ChatMessages = ({
         isLoading={fakeLoading}
       />
 
-      {messages.map((messages) => (
+      {messages.map((message) => (
         <ChatMessage
-          key={messages.content}
-          role={messages.role}
-          content={messages.content}
-          src={messages.src}
+          key={message.content}
+          role={message.role}
+          content={message.content}
+          src={companion.src}
         />
       ))}
 
