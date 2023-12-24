@@ -38,9 +38,8 @@ export const ProModal = () => {
     } finally {
       setLoading(false);
     }
-
-
   }
+
   return (
     <Dialog
       open={proModal.isOpen}
