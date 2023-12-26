@@ -54,7 +54,6 @@ export const ChatClient = ({
 
     setMessages((current) => [...current, userMessage]);
 
-    console.log('E IS: ', e)
     handleSubmit(e);
   }
 
