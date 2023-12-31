@@ -142,7 +142,7 @@ export const CompanionForm = ({
                   <FormControl>
                     <Input 
                       disabled={isLoading}
-                      placeholder="Sherlock Holmes"
+                      placeholder="Cristiano Ronaldo"
                       {...field}
                     />
                   </FormControl>
@@ -162,7 +162,7 @@ export const CompanionForm = ({
                   <FormControl>
                     <Input 
                     disabled={isLoading}
-                    placeholder="Smartass, drug addict, genius"
+                    placeholder="World famous football star"
                     {...field}
                     />
                   </FormControl>
